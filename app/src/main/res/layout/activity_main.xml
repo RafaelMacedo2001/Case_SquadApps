@@ -18,11 +18,11 @@
             android:layout_width="0dp"
             android:layout_height="50dp"
             android:layout_marginTop="2dp"
-            android:background="@color/medium_gray"
             android:layout_weight="5"
-            android:textColorHint="@color/light_gray"
+            android:background="@color/medium_gray"
             android:hint="@string/buscar"
-            android:inputType="text" />
+            android:inputType="text"
+            android:textColorHint="@color/light_gray" />
 
 
         <ImageView
@@ -38,7 +38,13 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="540dp"
+        android:padding="16dp"
         android:scrollbars="vertical">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
 
     </LinearLayout>
 
@@ -47,18 +53,20 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
-        android:src="@drawable/ic_add_fab"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
+        android:backgroundTint="@color/light_gray"
+        android:src="@drawable/ic_add_fab"
         app:elevation="10dp"
         app:pressedTranslationZ="12dp"
         app:tint="@color/dark_gray"
-        android:backgroundTint="@color/light_gray"/>
+        android:contentDescription="TODO" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:background="@color/medium_gray">
+        android:background="@color/medium_gray"
+        android:layout_gravity="bottom">
 
         <ImageView
             android:id="@+id/image_all_devices"
@@ -90,7 +98,6 @@
             android:layout_gravity="center_vertical"
             android:layout_weight="1"
             android:src="@drawable/ic_alarm_device_bottom" />
-
 
     </LinearLayout>
 
