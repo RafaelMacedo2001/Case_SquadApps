@@ -7,8 +7,10 @@ import androidx.recyclerview.widget.RecyclerView
 class DeviceAdapter : RecyclerView.Adapter<ItemViewHolder>(), OnMenuClickListener {
 
     private var items: List<BindableDevice> = emptyList()
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
+    var allDevices: List<BindableDevice> = emptyList()
+        private set
 
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
         return ItemViewHolder.create(parent, viewType, this)
     }
 
@@ -22,6 +24,7 @@ class DeviceAdapter : RecyclerView.Adapter<ItemViewHolder>(), OnMenuClickListene
 
     fun updateItems(newItems: List<BindableDevice>) {
         items = newItems
+        allDevices = newItems
         notifyDataSetChanged()
     }
 

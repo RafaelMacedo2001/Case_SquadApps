@@ -76,8 +76,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Número de série"
-            android:textColor="@color/light_gray"
             android:textAllCaps="true"
+            android:textColor="@color/light_gray"
             android:textColorHint="@color/light_gray" />
 
         <EditText
@@ -130,6 +130,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="MAC"
+            android:textAllCaps="true"
             android:textColor="@color/light_gray"
             android:textColorHint="@color/light_gray" />
 

@@ -7,7 +7,9 @@
         android:id="@+id/action_bookmark_video"
         android:title="Adicionar favorito" />
     <item
+        android:id="@+id/action_info_video"
+        android:title="Informações" />
+    <item
         android:id="@+id/action_delete_video"
         android:title="Excluir" />
-    <!-- Adicione mais opções de menu aqui, se necessário -->
 </menu>

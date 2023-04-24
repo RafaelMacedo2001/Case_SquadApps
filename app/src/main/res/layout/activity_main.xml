@@ -79,7 +79,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_weight="1"
-            android:src="@drawable/ic_home_bottom" />
+            android:src="@drawable/ic_home_bottom"
+            app:tint="@color/green" />
 
         <ImageView
             android:id="@+id/image_favorites"
@@ -87,7 +88,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_weight="1"
-            android:src="@drawable/ic_bookmark_bottom" />
+            android:src="@drawable/ic_bookmark_bottom"
+            app:tint="@color/light_gray"/>
 
         <ImageView
             android:id="@+id/image_video_devices"
@@ -95,14 +97,17 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_weight="1"
-            android:src="@drawable/ic_video_device_bottom" />
+            android:src="@drawable/ic_video_device_bottom"
+            app:tint="@color/light_gray"/>
 
         <ImageView
+            android:id="@+id/image_alarm_devices"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_weight="1"
-            android:src="@drawable/ic_alarm_device_bottom" />
+            android:src="@drawable/ic_alarm_device_bottom"
+            app:tint="@color/light_gray"/>
 
     </LinearLayout>
 

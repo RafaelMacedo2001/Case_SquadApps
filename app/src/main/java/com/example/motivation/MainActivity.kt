@@ -21,6 +21,12 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var binding: ActivityMainBinding
     private val deviceAdapter = DeviceAdapter()
 
+    private var currentFilter = DeviceFilter.ALL
+
+    enum class DeviceFilter {
+        ALL, FAVORITES, VIDEO, ALARM
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -29,6 +35,9 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         supportActionBar?.hide()
 
         binding.Fab.setOnClickListener(this)
+        binding.imageAllDevices.setOnClickListener { setFilter(DeviceFilter.ALL) }
+        binding.imageAlarmDevices.setOnClickListener { setFilter(DeviceFilter.ALARM) }
+        binding.imageVideoDevices.setOnClickListener { setFilter(DeviceFilter.VIDEO) }
 
         // Set up RecyclerView
         binding.recyclerView.layoutManager = LinearLayoutManager(this)
@@ -175,5 +184,42 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         allDevices.addAll(alarmDevices)
         allDevices.addAll(videoDevices)
         deviceAdapter.updateItems(allDevices)
+
+        applyFilter()
+    }
+
+    private fun applyFilter() {
+        val filteredList = when (currentFilter) {
+            DeviceFilter.ALL -> deviceAdapter.allDevices
+            DeviceFilter.FAVORITES -> TODO("Implementar filtragem de favoritos")
+            DeviceFilter.VIDEO -> deviceAdapter.allDevices.filterIsInstance<VideoDevices>()
+            DeviceFilter.ALARM -> deviceAdapter.allDevices.filterIsInstance<AlarmDevices>()
+        }
+        deviceAdapter.updateItems(filteredList)
+    }
+
+    private fun setFilter(filter: DeviceFilter) {
+        currentFilter = filter
+        updateBottomBarIcons()
+        applyFilter()
+    }
+
+    private fun updateBottomBarIcons() {
+        binding.imageAllDevices.setColorFilter(
+            if (currentFilter == DeviceFilter.ALL) resources.getColor(R.color.green)
+            else resources.getColor(R.color.light_gray)
+        )
+        binding.imageFavorites.setColorFilter(
+            if (currentFilter == DeviceFilter.FAVORITES) resources.getColor(R.color.green)
+            else resources.getColor(R.color.light_gray)
+        )
+        binding.imageVideoDevices.setColorFilter(
+            if (currentFilter == DeviceFilter.VIDEO) resources.getColor(R.color.green)
+            else resources.getColor(R.color.light_gray)
+        )
+        binding.imageAlarmDevices.setColorFilter(
+            if (currentFilter == DeviceFilter.ALARM) resources.getColor(R.color.green)
+            else resources.getColor(R.color.light_gray)
+        )
     }
 }
