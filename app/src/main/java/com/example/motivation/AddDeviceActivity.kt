@@ -75,6 +75,7 @@ class AddDeviceActivity : AppCompatActivity(), View.OnClickListener {
                             criarDispositivovideo(dispositivovideo)
                             withContext(Dispatchers.Main) {
                                 startActivity(Intent(this@AddDeviceActivity, MainActivity::class.java))
+
                             }
                         } catch (e: Exception) {
                             withContext(Dispatchers.Main) {
@@ -117,6 +118,10 @@ class AddDeviceActivity : AppCompatActivity(), View.OnClickListener {
                 }
             }
         }
+    }
+
+    private fun notifyDeviceAdded() {
+        Toast.makeText(this, "Dispositivo adicionado com sucesso!", Toast.LENGTH_SHORT).show()
     }
 
     private fun criarDispositivovideo(dispositivo: JSONObject): String {

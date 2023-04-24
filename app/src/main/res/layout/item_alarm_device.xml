@@ -17,10 +17,10 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:src="@drawable/ic_video_device" />
+            android:src="@drawable/ic_alarm_device" />
 
         <TextView
-            android:id="@+id/video_device_Name"
+            android:id="@+id/alarm_device_Name"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"

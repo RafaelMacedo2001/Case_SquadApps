@@ -75,8 +75,9 @@
             android:id="@+id/edit_nsvideo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="NS"
+            android:hint="Número de série"
             android:textColor="@color/light_gray"
+            android:textAllCaps="true"
             android:textColorHint="@color/light_gray" />
 
         <EditText
