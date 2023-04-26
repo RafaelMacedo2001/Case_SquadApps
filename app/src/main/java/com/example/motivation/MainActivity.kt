@@ -15,11 +15,13 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.atomic.AtomicInteger
+import androidx.core.content.ContextCompat
 
 class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     private lateinit var binding: ActivityMainBinding
     private val deviceAdapter = DeviceAdapter()
+    private val allDevices = mutableListOf<BindableDevice>()
 
     private var currentFilter = DeviceFilter.ALL
 
@@ -180,20 +182,19 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         alarmDevices: List<BindableDevice> = emptyList(),
         videoDevices: List<BindableDevice> = emptyList()
     ) {
-        val allDevices = mutableListOf<BindableDevice>()
+        allDevices.clear()
         allDevices.addAll(alarmDevices)
         allDevices.addAll(videoDevices)
-        deviceAdapter.updateItems(allDevices)
 
         applyFilter()
     }
 
     private fun applyFilter() {
         val filteredList = when (currentFilter) {
-            DeviceFilter.ALL -> deviceAdapter.allDevices
+            DeviceFilter.ALL -> allDevices
             DeviceFilter.FAVORITES -> TODO("Implementar filtragem de favoritos")
-            DeviceFilter.VIDEO -> deviceAdapter.allDevices.filterIsInstance<VideoDevices>()
-            DeviceFilter.ALARM -> deviceAdapter.allDevices.filterIsInstance<AlarmDevices>()
+            DeviceFilter.VIDEO -> allDevices.filterIsInstance<VideoDevices>()
+            DeviceFilter.ALARM -> allDevices.filterIsInstance<AlarmDevices>()
         }
         deviceAdapter.updateItems(filteredList)
     }
@@ -206,20 +207,21 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun updateBottomBarIcons() {
         binding.imageAllDevices.setColorFilter(
-            if (currentFilter == DeviceFilter.ALL) resources.getColor(R.color.green)
-            else resources.getColor(R.color.light_gray)
+            if (currentFilter == DeviceFilter.ALL) ContextCompat.getColor(this, R.color.green)
+            else ContextCompat.getColor(this, R.color.light_gray)
         )
         binding.imageFavorites.setColorFilter(
-            if (currentFilter == DeviceFilter.FAVORITES) resources.getColor(R.color.green)
-            else resources.getColor(R.color.light_gray)
+            if (currentFilter == DeviceFilter.FAVORITES) ContextCompat.getColor(this, R.color.green)
+            else ContextCompat.getColor(this, R.color.light_gray)
         )
         binding.imageVideoDevices.setColorFilter(
-            if (currentFilter == DeviceFilter.VIDEO) resources.getColor(R.color.green)
-            else resources.getColor(R.color.light_gray)
+            if (currentFilter == DeviceFilter.VIDEO) ContextCompat.getColor(this, R.color.green)
+            else ContextCompat.getColor(this, R.color.light_gray)
         )
         binding.imageAlarmDevices.setColorFilter(
-            if (currentFilter == DeviceFilter.ALARM) resources.getColor(R.color.green)
-            else resources.getColor(R.color.light_gray)
+            if (currentFilter == DeviceFilter.ALARM) ContextCompat.getColor(this, R.color.green)
+            else ContextCompat.getColor(this, R.color.light_gray)
         )
     }
+
 }

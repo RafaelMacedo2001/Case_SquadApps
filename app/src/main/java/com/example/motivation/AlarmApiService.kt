@@ -11,4 +11,6 @@ interface AlarmApiService {
     @Headers("Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjlhMmU0YTczLWNiODktNGUzZS1hMGE5LTYwODYxZDM3NWYwMSIsImlhdCI6MTY4MjAwODgzMSwiZXhwIjoxNjg0NjAwODMxfQ._WZkRusg8qj-kWeqVoFD3yVRdRneWmx7voHo2Jk7XU0")
     @GET("http://squadapps.ddns-intelbras.com.br:3000/alarm-centrals/")
     fun getAlarmDevices(): Call<AlarmDeviceResponse>
+
 }
+

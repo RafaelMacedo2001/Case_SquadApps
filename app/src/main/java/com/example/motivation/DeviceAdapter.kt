@@ -4,6 +4,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 
+interface OnMenuClickListener {
+    fun onMenuClick(position: Int, view: View)
+}
+
 class DeviceAdapter : RecyclerView.Adapter<ItemViewHolder>(), OnMenuClickListener {
 
     private var items: List<BindableDevice> = emptyList()

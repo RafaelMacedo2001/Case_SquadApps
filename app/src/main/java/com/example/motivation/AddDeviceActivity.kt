@@ -6,7 +6,6 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.core.content.ContextCompat
@@ -20,6 +19,12 @@ import org.json.JSONObject
 import java.io.IOException
 
 class AddDeviceActivity : AppCompatActivity(), View.OnClickListener {
+
+    val API_BASE_URL = "http://squadapps.ddns-intelbras.com.br:3000"
+    val API_TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjlhMmU0YTczLWNiODktNGUzZS1hMGE5L" +
+                    "TYwODYxZDM3NWYwMSIsImlhdCI6MTY4MjAwODgzMSwiZXhwIjoxNjg0NjAwODMxfQ._WZkRusg8qj-" +
+                    "kWeqVoFD3yVRdRneWmx7voHo2Jk7XU0"
+
     private lateinit var binding: ActivityAddDeviceBinding
     private lateinit var videoLayout: LinearLayout
     private lateinit var alarmLayout: LinearLayout
@@ -27,6 +32,7 @@ class AddDeviceActivity : AppCompatActivity(), View.OnClickListener {
     companion object {
         private const val TAG = "AddDeviceActivity"
     }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityAddDeviceBinding.inflate(layoutInflater)
@@ -74,8 +80,13 @@ class AddDeviceActivity : AppCompatActivity(), View.OnClickListener {
                         try {
                             criarDispositivovideo(dispositivovideo)
                             withContext(Dispatchers.Main) {
-                                startActivity(Intent(this@AddDeviceActivity, MainActivity::class.java))
-
+                                startActivity(
+                                    Intent(
+                                        this@AddDeviceActivity,
+                                        MainActivity::class.java
+                                    )
+                                )
+                                notifyDeviceAdded()
                             }
                         } catch (e: Exception) {
                             withContext(Dispatchers.Main) {
@@ -85,7 +96,8 @@ class AddDeviceActivity : AppCompatActivity(), View.OnClickListener {
                         }
                     }
                 } else {
-                    Toast.makeText(this, "Há campos a serem preenchidos!", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "Há campos a serem preenchidos!", Toast.LENGTH_SHORT)
+                        .show()
                 }
             }
 
@@ -104,36 +116,41 @@ class AddDeviceActivity : AppCompatActivity(), View.OnClickListener {
                         try {
                             criarDispositivoalarm(dispositivoalarm)
                             withContext(Dispatchers.Main) {
-                                startActivity(Intent(this@AddDeviceActivity, MainActivity::class.java))
+                                startActivity(
+                                    Intent(
+                                        this@AddDeviceActivity,
+                                        MainActivity::class.java
+                                    )
+                                )
+                                notifyDeviceAdded()
                             }
-                        }catch (e: Exception) {
+                        } catch (e: Exception) {
                             Log.e(TAG, "Erro ao criar o dispositivo: ${e.message}")
                             withContext(Dispatchers.Main) {
-                                alertvideo("Erro ao criar o dispositivo: ${e.message}")
+                                alertalarm("Erro ao criar o dispositivo: ${e.message}")
                             }
                         }
                     }
                 } else {
-                    Toast.makeText(this, "Há campos a serem preenchidos!", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "Há campos a serem preenchidos!", Toast.LENGTH_SHORT)
+                        .show()
                 }
             }
         }
     }
 
     private fun notifyDeviceAdded() {
-        Toast.makeText(this, "Dispositivo adicionado com sucesso!", Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, "Dispositivo adicionado com sucesso!", Toast.LENGTH_LONG).show()
     }
 
     private fun criarDispositivovideo(dispositivo: JSONObject): String {
-        val API_BASE_URL_VIDEO = "http://squadapps.ddns-intelbras.com.br:3000"
-        val API_TOKEN_VIDEO = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjlhMmU0YTczLWNiODktNGUzZS1hMGE5LTYwODYxZDM3NWYwMSIsImlhdCI6MTY4MjAwODgzMSwiZXhwIjoxNjg0NjAwODMxfQ._WZkRusg8qj-kWeqVoFD3yVRdRneWmx7voHo2Jk7XU0"
 
         val clientvideo = OkHttpClient()
         val bodyvideo = dispositivo.toString().toRequestBody("application/json".toMediaType())
 
         val requestvideo = Request.Builder()
-            .url("$API_BASE_URL_VIDEO/video-devices")
-            .header("Authorization", "Bearer $API_TOKEN_VIDEO")
+            .url("$API_BASE_URL/video-devices")
+            .header("Authorization", "Bearer $API_TOKEN")
             .post(bodyvideo)
             .build()
 
@@ -147,15 +164,13 @@ class AddDeviceActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun criarDispositivoalarm(dispositivo: JSONObject): String {
-        val API_BASE_URL_ALARM = "http://squadapps.ddns-intelbras.com.br:3000"
-        val API_TOKEN_ALARM = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjlhMmU0YTczLWNiODktNGUzZS1hMGE5LTYwODYxZDM3NWYwMSIsImlhdCI6MTY4MjAwODgzMSwiZXhwIjoxNjg0NjAwODMxfQ._WZkRusg8qj-kWeqVoFD3yVRdRneWmx7voHo2Jk7XU0"
 
         val clientalarm = OkHttpClient()
         val bodyalarm = dispositivo.toString().toRequestBody("application/json".toMediaType())
 
         val requestalarm = Request.Builder()
-            .url("$API_BASE_URL_ALARM/alarm-centrals")
-            .header("Authorization", "Bearer $API_TOKEN_ALARM")
+            .url("$API_BASE_URL/alarm-centrals")
+            .header("Authorization", "Bearer $API_TOKEN")
             .post(bodyalarm)
             .build()
 
