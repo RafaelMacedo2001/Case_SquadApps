@@ -23,7 +23,8 @@
             android:background="@color/medium_gray"
             android:hint="@string/buscar"
             android:inputType="text"
-            android:textColorHint="@color/light_gray" />
+            android:textColorHint="@color/light_gray"
+            android:textColor="@color/light_gray"/>
 
 
         <ImageView

@@ -20,8 +20,9 @@ import androidx.core.content.ContextCompat
 class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     private lateinit var binding: ActivityMainBinding
-    private val deviceAdapter = DeviceAdapter()
+    private val deviceAdapter = DeviceAdapter(this)
     private val allDevices = mutableListOf<BindableDevice>()
+
 
     private var currentFilter = DeviceFilter.ALL
 

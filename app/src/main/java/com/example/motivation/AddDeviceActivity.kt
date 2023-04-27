@@ -117,10 +117,7 @@ class AddDeviceActivity : AppCompatActivity(), View.OnClickListener {
                             criarDispositivoalarm(dispositivoalarm)
                             withContext(Dispatchers.Main) {
                                 startActivity(
-                                    Intent(
-                                        this@AddDeviceActivity,
-                                        MainActivity::class.java
-                                    )
+                                    Intent(this@AddDeviceActivity, MainActivity::class.java)
                                 )
                                 notifyDeviceAdded()
                             }
