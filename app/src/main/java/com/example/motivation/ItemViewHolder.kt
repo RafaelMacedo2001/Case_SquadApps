@@ -64,6 +64,10 @@ sealed class ItemViewHolder(itemView: View, val deviceAdapter: DeviceAdapter) : 
                 }
                 R.id.action_delete_alarm -> {
                     // Código para excluir o dispositivo de alarme
+                    val deviceId = (items[position] as? AlarmDevices)?.id
+                    if (deviceId != null) {
+                        deviceAdapter.deleteAlarmDevice(deviceId)
+                    }
                 }
                 R.id.action_delete_video -> {
                     // Código para excluir o dispositivo de vídeo

@@ -1,5 +1,6 @@
 package com.example.motivation
 
+import AlarmApiService
 import VideoApiService
 import android.content.Context
 import android.util.Log
@@ -55,6 +56,15 @@ class DeviceAdapter(private val context: Context) : RecyclerView.Adapter<ItemVie
         }
     }
 
+    //excluir dispositivo de vídeo
+
+    private val alarmRetrofit = Retrofit.Builder()
+        .baseUrl("http://squadapps.ddns-intelbras.com.br:3000/alarm-centrals/")
+        .addConverterFactory(GsonConverterFactory.create())
+        .build()
+
+    private val alarmDevicesApi: AlarmApiService = alarmRetrofit.create(AlarmApiService::class.java)
+
     private val retrofit = Retrofit.Builder()
         .baseUrl("http://squadapps.ddns-intelbras.com.br:3000/video-devices/")
         .addConverterFactory(GsonConverterFactory.create())
@@ -69,14 +79,21 @@ class DeviceAdapter(private val context: Context) : RecyclerView.Adapter<ItemVie
                 Log.d("DeviceAdapter", "Dispositivo deletado com sucesso")
                 val devicesResponse = videoDevicesApi.getvideoDevices().execute()
                 if (devicesResponse.isSuccessful) {
-                    val newDevices =
-                        devicesResponse.body()?.data?.map { it as BindableDevice } ?: emptyList()
-                    withContext(Dispatchers.Main) {
-                        updateItems(newDevices)
-                        notifyDeviceRemoved()
+                    val newVideoDevices =
+                        devicesResponse.body()?.data?.map { VideoDevices(it.id, it.name, it.serial, it.username, it.password) as BindableDevice } ?: emptyList()
+
+                    val alarmDevicesResponse = alarmDevicesApi.getAlarmDevices().execute()
+                    if (alarmDevicesResponse.isSuccessful) {
+                        val newAlarmDevices = alarmDevicesResponse.body()?.data?.map { AlarmDevices(it.id, it.name, it.macAddress, it.password) as BindableDevice } ?: emptyList()
+
+                        withContext(Dispatchers.Main) {
+                            (context as MainActivity).updateDevicesList()
+                        }
+                    } else {
+                        Log.e("DeviceAdapter", "Falha ao buscar dispositivos de alarme atualizados: ${alarmDevicesResponse.errorBody()?.string()}")
                     }
                 } else {
-                    Log.e("DeviceAdapter", "Falha ao buscar dispositivos atualizados: ${devicesResponse.errorBody()?.string()}")
+                    Log.e("DeviceAdapter", "Falha ao buscar dispositivos de vídeo atualizados: ${devicesResponse.errorBody()?.string()}")
                 }
             } else {
                 Log.e("DeviceAdapter", "Falha ao deletar o dispositivo: ${response.errorBody()?.string()}")
@@ -84,7 +101,32 @@ class DeviceAdapter(private val context: Context) : RecyclerView.Adapter<ItemVie
         }
     }
 
-    private fun notifyDeviceRemoved() {
-        Toast.makeText(context, "Dispositivo removido com sucesso!", Toast.LENGTH_LONG).show()
+    fun deleteAlarmDevice(deviceId: String) {
+        CoroutineScope(Dispatchers.IO).launch {
+            val response = alarmDevicesApi.deleteAlarmDevice(deviceId)
+            if (response.isSuccessful && response.code() == 200) {
+                Log.d("DeviceAdapter", "Dispositivo de alarme deletado com sucesso")
+
+                val alarmDevicesResponse = alarmDevicesApi.getAlarmDevices().execute()
+                if (alarmDevicesResponse.isSuccessful) {
+                    val newAlarmDevices = alarmDevicesResponse.body()?.data?.map { AlarmDevices(it.id, it.name, it.macAddress, it.password) as BindableDevice } ?: emptyList()
+
+                    val videoDevicesResponse = videoDevicesApi.getvideoDevices().execute()
+                    if (videoDevicesResponse.isSuccessful) {
+                        val newVideoDevices = videoDevicesResponse.body()?.data?.map { VideoDevices(it.id, it.name, it.serial, it.username, it.password) as BindableDevice } ?: emptyList()
+
+                        withContext(Dispatchers.Main) {
+                            (context as MainActivity).updateDevicesList()
+                        }
+                    } else {
+                        Log.e("DeviceAdapter", "Falha ao buscar dispositivos de vídeo atualizados: ${videoDevicesResponse.errorBody()?.string()}")
+                    }
+                } else {
+                    Log.e("DeviceAdapter", "Falha ao buscar dispositivos de alarme atualizados: ${alarmDevicesResponse.errorBody()?.string()}")
+                }
+            } else {
+                Log.e("DeviceAdapter", "Falha ao deletar o dispositivo de alarme: ${response.errorBody()?.string()}")
+            }
+        }
     }
 }

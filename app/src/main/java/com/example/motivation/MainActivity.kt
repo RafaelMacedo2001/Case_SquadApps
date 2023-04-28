@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.motivation.databinding.ActivityMainBinding
 import retrofit2.Call
@@ -95,6 +96,10 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             alarmDevices = devices
             updateDevices()
         }
+    }
+    fun updateDevicesList() {
+        fetchDevices()
+        Toast.makeText(this, "Dispositivo removido com sucesso!", Toast.LENGTH_LONG).show()
     }
 
 
@@ -201,6 +206,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun setFilter(filter: DeviceFilter) {
+        fetchDevices() //linha para buscar dispositivos antes de aplicar o filtro
         currentFilter = filter
         updateBottomBarIcons()
         applyFilter()
