@@ -6,6 +6,7 @@ import android.content.Context
 import android.util.Log
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.CoroutineScope
@@ -20,7 +21,7 @@ interface OnMenuClickListener {
     fun onMenuClick(position: Int, view: View)
 }
 
-class DeviceAdapter(private val context: Context) : RecyclerView.Adapter<ItemViewHolder>(), OnMenuClickListener {
+class DeviceAdapter(private val context: Context, private val emptyView: TextView) : RecyclerView.Adapter<ItemViewHolder>(), OnMenuClickListener {
 
     var items: List<BindableDevice> = emptyList()
     var allDevices: List<BindableDevice> = emptyList()
@@ -42,6 +43,13 @@ class DeviceAdapter(private val context: Context) : RecyclerView.Adapter<ItemVie
         items = newItems
         allDevices = newItems
         notifyDataSetChanged()
+
+        // Verifique se a lista está vazia e atualize a visibilidade da mensagem sem dispositivos
+        if (items.isEmpty()) {
+            emptyView.visibility = View.VISIBLE
+        } else {
+            emptyView.visibility = View.GONE
+        }
     }
 
     override fun onMenuClick(position: Int, view: View) {

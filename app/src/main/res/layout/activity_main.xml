@@ -9,6 +9,14 @@
     tools:context=".MainActivity">
 
     <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:orientation="vertical">
+    </LinearLayout>
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -24,8 +32,7 @@
             android:hint="@string/buscar"
             android:inputType="text"
             android:textColorHint="@color/light_gray"
-            android:textColor="@color/light_gray"/>
-
+            android:textColor="@color/light_gray" />
 
         <ImageView
             android:layout_width="0dp"
@@ -37,23 +44,28 @@
 
     </LinearLayout>
 
-    <LinearLayout
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="540dp"
-        android:padding="16dp"
-        android:scrollbars="vertical">
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:padding="16dp">
 
-        <ScrollView
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerView"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-        </ScrollView>
+        <TextView
+            android:id="@+id/empty_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Nenhum dispositivo cadastrado. Clique no ícone '+' para adicionar."
+            android:textSize="16sp"
+            android:textColor="@color/light_gray"
+            android:layout_gravity="center"
+            android:visibility="gone" />
 
-    </LinearLayout>
+    </FrameLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/Fab"
@@ -70,6 +82,7 @@
         android:contentDescription="TODO" />
 
     <LinearLayout
+        android:id="@+id/bottom_menu"
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:background="@color/medium_gray"
@@ -83,6 +96,7 @@
             android:layout_weight="1"
             android:src="@drawable/ic_home_bottom"
             app:tint="@color/green" />
+
 
         <ImageView
             android:id="@+id/image_favorites"

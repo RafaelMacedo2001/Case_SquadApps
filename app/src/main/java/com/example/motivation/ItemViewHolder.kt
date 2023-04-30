@@ -1,5 +1,7 @@
 package com.example.motivation
 
+import android.app.AlertDialog
+import android.content.DialogInterface
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -7,6 +9,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.motivation.databinding.ItemAlarmDeviceBinding
 import com.example.motivation.databinding.ItemVideoDeviceBinding
 import android.widget.PopupMenu
+import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.core.content.ContextCompat
+import java.util.*
 
 sealed class ItemViewHolder(itemView: View, val deviceAdapter: DeviceAdapter) : RecyclerView.ViewHolder(itemView) {
 
@@ -34,6 +39,19 @@ sealed class ItemViewHolder(itemView: View, val deviceAdapter: DeviceAdapter) : 
         }
     }
 
+    private fun showAlert(title: String, message: String) {
+        val alertDialog = AlertDialog.Builder(itemView.context)
+        alertDialog.setTitle(title)
+        alertDialog.setMessage(message)
+        alertDialog.setPositiveButton("OK") { dialog, _ ->
+            dialog.dismiss()
+        }
+        val alert = alertDialog.create()
+        alert.show()
+        val okButton = alert.getButton(DialogInterface.BUTTON_POSITIVE)
+        okButton.setTextColor(ContextCompat.getColor(itemView.context, R.color.green))
+    }
+
     fun showPopupMenu(view: View, position: Int, items: List<BindableDevice>) {
         // Criando um PopupMenu
         val popup = PopupMenu(view.context, view)
@@ -57,10 +75,23 @@ sealed class ItemViewHolder(itemView: View, val deviceAdapter: DeviceAdapter) : 
                     // Código para adicionar os dispositivos aos favoritos
                 }
                 R.id.action_info_alarm -> {
-                    // Código para informações do dispositivo de alarme
+                    // Código para exibir informações do dispositivo de alarme
+                    val name = (items[position] as? AlarmDevices)?.name
+                    val macAddress = (items[position] as? AlarmDevices)?.macAddress?.uppercase(
+                        Locale.ROOT
+                    )
+                    if (name != null && macAddress != null) {
+                        showAlert("Informações do dispositivo:", "Nome: $name\nMAC: $macAddress")
+                    }
                 }
                 R.id.action_info_video -> {
-                    // Código para informações do dispositivo de vídeo
+                    // Código para exibir informações do dispositivo de vídeo
+                    val name = (items[position] as? VideoDevices)?.name
+                    val serial = (items[position] as? VideoDevices)?.serial?.uppercase(Locale.ROOT)
+                    val username = (items[position] as? VideoDevices)?.username
+                    if (name != null && serial != null && username != null) {
+                        showAlert("Informações do dispositivo:", "Nome: $name\nNúmero de Série: $serial\nUsuário: $username")
+                    }
                 }
                 R.id.action_delete_alarm -> {
                     // Código para excluir o dispositivo de alarme
@@ -111,4 +142,5 @@ fun ItemViewHolder.videoBind(videoDevice: VideoDevices) {
     if (this is ItemViewHolder.VideoViewHolder) {
         this.bind(videoDevice)
     }
+
 }

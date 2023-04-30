@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.motivation.databinding.ActivityMainBinding
@@ -21,10 +22,10 @@ import androidx.core.content.ContextCompat
 class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     private lateinit var binding: ActivityMainBinding
-    private val deviceAdapter = DeviceAdapter(this)
+    private lateinit var emptyView: TextView
     private val allDevices = mutableListOf<BindableDevice>()
 
-
+    private lateinit var deviceAdapter: DeviceAdapter
     private var currentFilter = DeviceFilter.ALL
 
     enum class DeviceFilter {
@@ -35,6 +36,9 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        emptyView = findViewById(R.id.empty_view)
+        deviceAdapter = DeviceAdapter(this, emptyView)
 
         supportActionBar?.hide()
 
@@ -73,7 +77,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     companion object {
         private const val ADD_DEVICE_REQUEST_CODE = 1
-        const val ACTION_DEVICE_ADDED = "com.example.motivation.ACTION_DEVICE_ADDED"
     }
 
     private fun fetchDevices() {
