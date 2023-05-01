@@ -1,4 +1,4 @@
-package com.example.motivation
+package Activity
 
 import android.content.Intent
 import androidx.appcompat.app.AlertDialog
@@ -11,6 +11,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
+import com.example.motivation.R
 import com.example.motivation.databinding.ActivityAddDeviceBinding
 import kotlinx.coroutines.*
 import okhttp3.MediaType.Companion.toMediaType

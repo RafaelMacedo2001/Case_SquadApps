@@ -13,7 +13,7 @@
         android:usesCleartextTraffic="true">
 
         <activity
-            android:name=".MainActivity"
+            android:name="Activity.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -22,7 +22,7 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".AddDeviceActivity" />
+        <activity android:name="Activity.AddDeviceActivity" />
 
         <uses-library
             android:name="org.apache.http.legacy"

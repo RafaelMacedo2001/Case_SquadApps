@@ -1,13 +1,13 @@
 package com.example.motivation
 
-import AlarmApiService
-import VideoApiService
+import Activity.MainActivity
+import Api.services.AlarmApiService
+import Api.services.VideoApiService
 import android.content.Context
 import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -135,6 +135,27 @@ class DeviceAdapter(private val context: Context, private val emptyView: TextVie
             } else {
                 Log.e("DeviceAdapter", "Falha ao deletar o dispositivo de alarme: ${response.errorBody()?.string()}")
             }
+        }
+    }
+    fun searchItems(query: String) {
+        items = if (query.isEmpty()) {
+            allDevices
+        } else {
+            allDevices.filter { device ->
+                when (device) {
+                    is AlarmDevices -> device.name.contains(query, ignoreCase = true)
+                    is VideoDevices -> device.name.contains(query, ignoreCase = true)
+                    else -> false
+                }
+            }
+        }
+        notifyDataSetChanged()
+
+        // Verifique se a lista está vazia e atualize a visibilidade da mensagem sem dispositivos
+        if (items.isEmpty()) {
+            emptyView.visibility = View.VISIBLE
+        } else {
+            emptyView.visibility = View.GONE
         }
     }
 }

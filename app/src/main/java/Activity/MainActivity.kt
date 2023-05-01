@@ -1,10 +1,12 @@
-package com.example.motivation
+package Activity
 
-import AlarmApiService
-import VideoApiService
+import Api.services.AlarmApiService
+import Api.services.VideoApiService
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.View
 import android.widget.TextView
@@ -18,6 +20,8 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.atomic.AtomicInteger
 import androidx.core.content.ContextCompat
+import com.example.motivation.*
+import android.widget.EditText
 
 class MainActivity : AppCompatActivity(), View.OnClickListener {
 
@@ -47,12 +51,30 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         binding.imageAlarmDevices.setOnClickListener { setFilter(DeviceFilter.ALARM) }
         binding.imageVideoDevices.setOnClickListener { setFilter(DeviceFilter.VIDEO) }
 
+
         // Set up RecyclerView
         binding.recyclerView.layoutManager = LinearLayoutManager(this)
         binding.recyclerView.adapter = deviceAdapter
 
+
         // Fetch devices and update the list
         fetchDevices()
+
+        val searchBar = findViewById<EditText>(R.id.edit_search_device)
+        searchBar.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
+                //sem implementação
+            }
+
+            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+                // Realiza a busca enquanto o usuário digita
+                deviceAdapter.searchItems(s.toString())
+            }
+
+            override fun afterTextChanged(s: Editable) {
+                //sem implementação
+            }
+        })
     }
 
     override fun onClick(view: View) {
